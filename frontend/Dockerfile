@@ -1,8 +1,17 @@
-# Utiliser l'image de base Nginx
+# Utiliser l'image de base Nginx (version alpine pour la légèreté)
 FROM nginx:alpine
 
-# Copier les fichiers de l'application frontend dans le répertoire approprié
-COPY . /usr/share/nginx/html
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /usr/share/nginx/html
 
-# Exposer le port 80 pour le serveur web
-EXPOSE 80
+# Supprimer les fichiers par défaut de Nginx (si nécessaires)
+RUN rm -rf ./*
+
+# Copier les fichiers de votre application frontend
+COPY . .
+
+# Exposer le port 8080 pour Cloud Run
+EXPOSE 8080
+
+# Commande par défaut pour lancer Nginx
+CMD ["nginx", "-g", "daemon off;"]
