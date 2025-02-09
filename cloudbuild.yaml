@@ -1,4 +1,18 @@
 steps:
-- name: 'docker/compose:1.29.2'  # par exemple, image DockerHub
-  entrypoint: 'docker-compose'
-  args: ['build']
+  # Étape 1 : builder toutes les images définies dans docker-compose.yml
+  - name: 'docker/compose:1.29.2'
+    entrypoint: 'docker-compose'
+    args: ['build']
+
+  # Étape 2 : pousser les images sur le registre (Container Registry)
+  - name: 'docker/compose:1.29.2'
+    entrypoint: 'docker-compose'
+    args: ['push']
+
+# (Optionnel) Indiquer que ces images sont un résultat de build
+images:
+- 'gcr.io/$PROJECT_ID/backend:latest'
+- 'gcr.io/$PROJECT_ID/frontend:latest'
+options:
+  logging: NONE
+
