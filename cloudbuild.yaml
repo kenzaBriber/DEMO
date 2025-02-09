@@ -1,30 +1,39 @@
-# cloudbuild.yaml
 steps:
-  # Build l'image backend
+  # Étape 1 : Build l'image backend
   - name: 'gcr.io/cloud-builders/docker'
     args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/backend:latest'
-      - './backend'
-  # Push l'image backend
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'gcr.io/$PROJECT_ID/backend:latest'
+      [
+        'build', 
+        '-t', 'gcr.io/$PROJECT_ID/backend:latest', 
+        '-f', './backend/Dockerfile', 
+        './backend'
+      ]
 
-  # Build l'image frontend
+  # Étape 2 : Push l'image backend
   - name: 'gcr.io/cloud-builders/docker'
     args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/frontend:latest'
-      - './frontend'
-  # Push l'image frontend
+      [
+        'push', 
+        'gcr.io/$PROJECT_ID/backend:latest'
+      ]
+
+  # Étape 3 : Build l'image frontend
   - name: 'gcr.io/cloud-builders/docker'
     args:
-      - 'push'
-      - 'gcr.io/$PROJECT_ID/frontend:latest'
+      [
+        'build', 
+        '-t', 'gcr.io/$PROJECT_ID/frontend:latest', 
+        '-f', './frontend/Dockerfile', 
+        './frontend'
+      ]
+
+  # Étape 4 : Push l'image frontend
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push', 
+        'gcr.io/$PROJECT_ID/frontend:latest'
+      ]
 
 images:
   - 'gcr.io/$PROJECT_ID/backend:latest'
