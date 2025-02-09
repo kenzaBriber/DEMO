@@ -1,24 +1,25 @@
 version: "3.8"
+
 services:
   backend:
     build:
       context: ./backend
-    image: gcr.io/pidr-1/backend:latest 
-    container_name: backend-container
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - frontend
+    image: gcr.io/$PROJECT_ID/backend:latest
+    # container_name: backend-container
+    # ports / volumes sont souvent inutiles dans un build Cloud Build
+    # ports:
+    #   - "5000:5000"
+    # volumes:
+    #   - ./backend:/app
+    # depends_on:
+    #   - frontend
 
   frontend:
     build:
       context: ./frontend
-    image: gcr.io/pidr-1/frontend:latest
-      
-    container_name: frontend-container
-    ports:
-      - "3000:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html
+    image: gcr.io/$PROJECT_ID/frontend:latest
+    # container_name: frontend-container
+    # ports:
+    #   - "3000:80"
+    # volumes:
+    #   - ./frontend:/usr/share/nginx/html

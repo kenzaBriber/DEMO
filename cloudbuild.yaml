@@ -1,18 +1,23 @@
 steps:
-  # Étape 1 : builder toutes les images définies dans docker-compose.yml
+  # Étape 1 : construire toutes les images
   - name: 'docker/compose:1.29.2'
     entrypoint: 'docker-compose'
-    args: ['build']
+    args:
+      - '-f'
+      - 'docker-compose.yml'
+      - 'build'
 
-  # Étape 2 : pousser les images sur le registre (Container Registry)
+  # Étape 2 : pousser toutes les images sur GCR
   - name: 'docker/compose:1.29.2'
     entrypoint: 'docker-compose'
-    args: ['push']
+    args:
+      - '-f'
+      - 'docker-compose.yml'
+      - 'push'
 
-# (Optionnel) Indiquer que ces images sont un résultat de build
 images:
-- 'gcr.io/$PROJECT_ID/backend:latest'
-- 'gcr.io/$PROJECT_ID/frontend:latest'
+  - 'gcr.io/$PROJECT_ID/backend:latest'
+  - 'gcr.io/$PROJECT_ID/frontend:latest'
+
 options:
   logging: NONE
-
